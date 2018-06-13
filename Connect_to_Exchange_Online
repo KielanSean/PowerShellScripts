@@ -1,0 +1,23 @@
+ ####################################################################
+ # AUTHOR	: Kielan Sullivan
+ # CREATED	: 6/13/2018
+ # UPDATED	:
+ # COMMENT	: Run the following script:
+ # 			  Read-Host -Prompt “Enter your tenant password” -AsSecureString |
+ #			  ConvertFrom-SecureString | Out-File “C:\O365\key\TENANTNAME.key”
+ # 			  Prior to Running this script changing the location and the TENANTNAME to your preference.
+ ####################################################################
+
+# Change UserName Prior to running and uncomment next line to run
+#$UserName = "Tenant@Tenant.com"
+
+# Change Location for your key and uncomment next line to run
+#$UserPW = cat "C:\yourlocation\filename.key" | ConvertTo-SecureString
+
+$UserCredential = new-object -typename System.Management.Automation.PSCredential -argumentlist $UserName, $UserPW
+
+Connect-MsolService -Credential $UserCredential
+
+$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $UserCredential -Authentication Basic -AllowRedirection
+
+Import-PSSession $Session
